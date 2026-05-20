@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora de Precificação — Monitoramento IA</title>
-  <meta name="description" content="Calculadora profissional para precificação de serviços de monitoramento com IA para restaurantes." />
+  <meta name="description"
+    content="Calculadora profissional para precificação de serviços de monitoramento com IA para restaurantes." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="bg-orbs">
     <div class="orb orb-1"></div>
@@ -22,15 +26,16 @@
     <div class="card login-card">
       <div class="header-badge" style="margin-bottom: 12px;">ACESSO RESTRITO</div>
       <h1 class="header-title" style="font-size: 28px; margin-bottom: 8px;">Bem-vindo(a)</h1>
-      <p class="header-subtitle" style="margin-bottom: 32px; font-size: 14px;">Faça login para acessar a calculadora.</p>
-      
+      <p class="header-subtitle" style="margin-bottom: 32px; font-size: 14px;">Faça login para acessar a calculadora.
+      </p>
+
       <div class="field-group" style="margin-bottom: 16px; text-align: left;">
         <label class="field-label">E-mail</label>
         <div class="input-wrapper">
           <input type="email" id="login-email" class="field-input" placeholder="Digite seu e-mail" />
         </div>
       </div>
-      
+
       <div class="field-group" style="margin-bottom: 24px; text-align: left;">
         <label class="field-label">Senha</label>
         <div class="input-wrapper">
@@ -40,7 +45,8 @@
 
       <div id="login-error" class="login-error">Credenciais incorretas. Tente novamente.</div>
 
-      <button class="btn-confirm" style="width: 100%; padding: 14px; font-size: 15px;" onclick="handleLogin()">Entrar</button>
+      <button class="btn-confirm" style="width: 100%; padding: 14px; font-size: 15px;"
+        onclick="handleLogin()">Entrar</button>
     </div>
   </div>
 
@@ -57,7 +63,8 @@
     <header class="header">
       <div class="header-badge">CALCULADORA DE PRECIFICAÇÃO</div>
       <h1 class="header-title">Monitoramento IA <span class="gradient-text">por Restaurante</span></h1>
-      <p class="header-subtitle">Calcule automaticamente o custo de infra, equipe, encargos e impostos para precificar seu serviço.</p>
+      <p class="header-subtitle">Calcule automaticamente o custo de infra, equipe, encargos e impostos para precificar
+        seu serviço.</p>
     </header>
 
     <!-- DEV / APRESENTAÇÃO VIEW (mesmo HTML, modo controlado por CSS) -->
@@ -109,21 +116,27 @@
               <label for="preco-venda" class="field-label" style="color: var(--emerald);">Preço Cobrado (Mensal)</label>
               <div class="input-wrapper">
                 <span class="input-prefix" style="color: var(--emerald);">R$</span>
-                <input type="number" id="preco-venda" class="field-input has-prefix" value="550.00" min="0" step="10" style="border-color: rgba(16,185,129,0.5); font-weight: bold; color: var(--emerald); background: rgba(16,185,129,0.05);" />
+                <input type="number" id="preco-venda" class="field-input has-prefix" value="550.00" min="0" step="10"
+                  style="border-color: rgba(16,185,129,0.5); font-weight: bold; color: var(--emerald); background: rgba(16,185,129,0.05);" />
               </div>
             </div>
             <div class="field-group">
-              <label for="taxa-vision" class="field-label" style="color: var(--primary);">Impl. Cortex Vision (Única)</label>
+              <label for="taxa-vision" class="field-label" style="color: var(--primary);">Impl. Cortex Vision
+                (Única)</label>
               <div class="input-wrapper">
                 <span class="input-prefix" style="color: var(--primary);">R$</span>
-                <input type="number" id="taxa-vision" class="field-input has-prefix" value="2000.00" min="0" step="100" style="border-color: rgba(61,155,255,0.5); font-weight: bold; color: var(--primary); background: rgba(61,155,255,0.05);" />
+                <input type="number" id="taxa-vision" class="field-input has-prefix" value="2000.00" min="0" step="100"
+                  style="border-color: rgba(61,155,255,0.5); font-weight: bold; color: var(--primary); background: rgba(61,155,255,0.05);" />
               </div>
             </div>
             <div class="field-group">
-              <label for="taxa-controle" class="field-label" style="color: var(--primary);">Impl. Cortex Controle (Única)</label>
+              <label for="taxa-controle" class="field-label" style="color: var(--primary);">Impl. Cortex Controle
+                (Única)</label>
               <div class="input-wrapper">
                 <span class="input-prefix" style="color: var(--primary);">R$</span>
-                <input type="number" id="taxa-controle" class="field-input has-prefix" value="2000.00" min="0" step="100" style="border-color: rgba(61,155,255,0.5); font-weight: bold; color: var(--primary); background: rgba(61,155,255,0.05);" />
+                <input type="number" id="taxa-controle" class="field-input has-prefix" value="2000.00" min="0"
+                  step="100"
+                  style="border-color: rgba(61,155,255,0.5); font-weight: bold; color: var(--primary); background: rgba(61,155,255,0.05);" />
               </div>
             </div>
           </div>
@@ -220,7 +233,8 @@
                   <span class="breakdown-label">Imposto (<span id="label-imposto-pct">15</span>%)</span>
                   <span class="breakdown-value" id="val-imposto">R$ 0,00</span>
                 </div>
-                <span style="font-size: 10px; color: var(--text-3); margin-top: 2px;">Calculado sobre a Receita Bruta (Preço cobrado)</span>
+                <span style="font-size: 10px; color: var(--text-3); margin-top: 2px;">Calculado sobre a Receita Bruta
+                  (Preço cobrado)</span>
               </div>
             </div>
 
@@ -235,7 +249,8 @@
                 <div class="metric-icon">📈</div>
                 <div class="metric-label" style="color: var(--emerald);">Lucro por Restaurante</div>
                 <div class="metric-value" id="metric-lucro-rest" style="color: var(--emerald);">R$ 0,00</div>
-                <div class="metric-sub" id="metric-margem" style="color: var(--emerald); font-weight: bold;">Margem: 0%</div>
+                <div class="metric-sub" id="metric-margem" style="color: var(--emerald); font-weight: bold;">Margem: 0%
+                </div>
               </div>
               <div class="metric-card" style="background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.3);">
                 <div class="metric-icon">💰</div>
@@ -273,7 +288,8 @@
               </div>
             </div>
 
-            <div class="breakdown-total" style="margin-top: 16px; background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(244,63,94,0.1)); border-color: rgba(245,158,11,0.25);">
+            <div class="breakdown-total"
+              style="margin-top: 16px; background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(244,63,94,0.1)); border-color: rgba(245,158,11,0.25);">
               <span class="total-label" style="color: var(--amber);">Receita Única (Setup)</span>
               <span class="total-value" id="val-implementacao-total" style="color: var(--amber);">R$ 0,00</span>
             </div>
@@ -321,7 +337,7 @@
             </select>
           </div>
         </div>
-        
+
         <div class="form-grid-2">
           <div class="field-group">
             <label class="field-label">Cobrado por</label>
@@ -344,21 +360,22 @@
           </div>
         </div>
 
-        <div class="scaling-info" id="scaling-explanation">O valor será cobrado uma única vez, independentemente da quantidade de restaurantes.</div>
+        <div class="scaling-info" id="scaling-explanation">O valor será cobrado uma única vez, independentemente da
+          quantidade de restaurantes.</div>
 
         <div class="form-grid-3 hidden" id="time-fields">
-           <div class="field-group">
-             <label class="field-label">Turnos</label>
-             <input type="number" id="modal-shifts" class="field-input" value="1" min="1" />
-           </div>
-           <div class="field-group">
-             <label class="field-label" id="label-hours-per">Horas/Turno</label>
-             <input type="number" id="modal-hours" class="field-input" value="6" min="1" />
-           </div>
-           <div class="field-group">
-             <label class="field-label">Dias/Mês</label>
-             <input type="number" id="modal-days" class="field-input" value="30" min="1" />
-           </div>
+          <div class="field-group">
+            <label class="field-label">Turnos</label>
+            <input type="number" id="modal-shifts" class="field-input" value="1" min="1" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" id="label-hours-per">Horas/Turno</label>
+            <input type="number" id="modal-hours" class="field-input" value="6" min="1" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Dias/Mês</label>
+            <input type="number" id="modal-days" class="field-input" value="30" min="1" />
+          </div>
         </div>
 
         <div class="field-group" id="modal-desc-group">
@@ -375,4 +392,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>

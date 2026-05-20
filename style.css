@@ -221,9 +221,8 @@ body.modo-apresentacao #btn-add-equipe { display: none !important; }
 body.modo-apresentacao #section-equipe .item-edit,
 body.modo-apresentacao #section-equipe .item-delete { display: none !important; }
 
-/* 8. Esconde campos técnicos da config (câmbio) */
-body.modo-apresentacao #taxa-cambio { display: none !important; }
-body.modo-apresentacao label[for="taxa-cambio"] { display: none !important; }
+/* 8. Esconde campo inteiro de Câmbio (label + R$ + input) */
+body.modo-apresentacao .field-group:has(#taxa-cambio) { display: none !important; }
 
 /* 9. Infra — nomes borrados (efeito senha), botões ocultos */
 body.modo-apresentacao #infra-list .item-name {
