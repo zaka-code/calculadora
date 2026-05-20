@@ -11,6 +11,8 @@ const STATE = {
   encargos: 10,
   imposto: 15,
   precoVenda: 550,
+  taxaVision: 2000,
+  taxaControle: 2000,
 };
 
 const GPU_CAP  = 4;   // restaurantes por GPU
@@ -219,12 +221,14 @@ function calcular() {
   const lucroTotal = receitaTotal - total;
   const lucroPorRestaurante = n > 0 ? lucroTotal / n : 0;
   const margem = STATE.precoVenda > 0 ? (lucroPorRestaurante / STATE.precoVenda) * 100 : 0;
+  
+  const implementacaoTotal = (STATE.taxaVision + STATE.taxaControle) * n;
 
   updateResultsDOM({
     totalInfraBRL, totalEquipeBRL,
     subtotal, encargo, imposto, total,
     porRestaurante, porCamera,
-    lucroPorRestaurante, lucroTotal, margem,
+    lucroPorRestaurante, lucroTotal, margem, implementacaoTotal,
     detalheInfra, gpus, vpss, n,
   });
 }
@@ -254,6 +258,9 @@ function updateResultsDOM(r) {
   document.getElementById('metric-lucro-rest').textContent   = fmt(r.lucroPorRestaurante);
   document.getElementById('metric-lucro-total').textContent  = fmt(r.lucroTotal);
   document.getElementById('metric-margem').textContent       = `Margem: ${r.margem.toFixed(1)}%`;
+  
+  const elImplementacao = document.getElementById('val-implementacao-total');
+  if (elImplementacao) elImplementacao.textContent = fmt(r.implementacaoTotal);
 
   document.getElementById('resource-summary').innerHTML = `
     <div class="res-badge"><div class="res-badge-icon">⚡</div><div class="res-badge-val">${r.gpus}</div><div class="res-badge-label">GPU${r.gpus !== 1 ? 's' : ''}</div></div>
@@ -273,6 +280,32 @@ function updateResultsDOM(r) {
       </div>
     </div>
   `).join('');
+
+  // ── Atualiza Modo Apresentação ──
+  const setAP = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setAP('ap-metric-restaurante', fmt(r.porRestaurante));
+  setAP('ap-metric-qtd-rest', `${r.n} restaurante${r.n !== 1 ? 's' : ''}`);
+  setAP('ap-metric-camera', fmt(r.porCamera));
+  setAP('ap-metric-encargo', fmt(r.encargo));
+  setAP('ap-metric-encargo-pct', `${STATE.encargos}% do subtotal`);
+  setAP('ap-metric-imposto', fmt(r.imposto));
+  setAP('ap-metric-imposto-pct', `${STATE.imposto}% da Receita Bruta`);
+
+  setAP('ap-receita-total', fmt(STATE.precoVenda * r.n));
+  setAP('ap-infra', fmt(r.totalInfraBRL));
+  setAP('ap-equipe', fmt(r.totalEquipeBRL));
+  setAP('ap-total', fmt(r.total));
+  setAP('ap-lucro-total', fmt(r.lucroTotal));
+  setAP('ap-lucro-rest', `${fmt(r.lucroPorRestaurante)} por restaurante`);
+  setAP('ap-margem', `Margem: ${r.margem.toFixed(1)}%`);
+  setAP('ap-implementacao', fmt(r.implementacaoTotal));
+
+  const apRes = document.getElementById('ap-resource-summary');
+  if (apRes) apRes.innerHTML = `
+    <div class="res-badge"><div class="res-badge-icon">⚡</div><div class="res-badge-val">${r.gpus}</div><div class="res-badge-label">GPU${r.gpus !== 1 ? 's' : ''}</div></div>
+    <div class="res-badge"><div class="res-badge-icon">🖥️</div><div class="res-badge-val">${r.vpss}</div><div class="res-badge-label">VPS</div></div>
+    <div class="res-badge"><div class="res-badge-icon">📷</div><div class="res-badge-val">${r.n * CAM_POR_REST}</div><div class="res-badge-label">Câmeras</div></div>
+  `;
 }
 
 // ──────────────────────────────────────────────
@@ -341,6 +374,8 @@ function bindConfigInputs() {
   bind('encargos', 'encargos');
   bind('imposto', 'imposto');
   bind('preco-venda', 'precoVenda');
+  bind('taxa-vision', 'taxaVision');
+  bind('taxa-controle', 'taxaControle');
 }
 
 function removeItem(source, id) {
@@ -477,10 +512,53 @@ function confirmModal() {
 }
 
 // ──────────────────────────────────────────────
+// MODE SWITCHER
+// ──────────────────────────────────────────────
+function setMode(mode) {
+  const btnDev = document.getElementById('btn-dev');
+  const btnAp  = document.getElementById('btn-apresentacao');
+
+  if (mode === 'dev') {
+    document.body.classList.remove('modo-apresentacao');
+    btnDev.classList.add('active');
+    btnAp.classList.remove('active');
+  } else {
+    document.body.classList.add('modo-apresentacao');
+    btnDev.classList.remove('active');
+    btnAp.classList.add('active');
+  }
+}
+
+// ──────────────────────────────────────────────
+// LOGIN
+// ──────────────────────────────────────────────
+function handleLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value.trim();
+  const errEl = document.getElementById('login-error');
+
+  if (email === 'camilatanizaka@gmail.com' && pass === '22394') {
+    errEl.classList.remove('visible');
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('app-container').style.display = 'block';
+  } else {
+    errEl.classList.add('visible');
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-password').focus();
+  }
+}
+
+// ──────────────────────────────────────────────
 // INIT
 // ──────────────────────────────────────────────
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && document.getElementById('modal-overlay').classList.contains('open')) confirmModal();
+  if (e.key === 'Enter') {
+    if (document.getElementById('modal-overlay').classList.contains('open')) {
+      confirmModal();
+    } else if (document.getElementById('login-container').style.display !== 'none') {
+      handleLogin();
+    }
+  }
   if (e.key === 'Escape') closeModal();
 });
 

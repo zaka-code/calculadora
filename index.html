@@ -17,7 +17,42 @@
     <div class="orb orb-3"></div>
   </div>
 
-  <div class="container">
+  <!-- LOGIN OVERLAY -->
+  <div class="login-container" id="login-container">
+    <div class="card login-card">
+      <div class="header-badge" style="margin-bottom: 12px;">ACESSO RESTRITO</div>
+      <h1 class="header-title" style="font-size: 28px; margin-bottom: 8px;">Bem-vindo(a)</h1>
+      <p class="header-subtitle" style="margin-bottom: 32px; font-size: 14px;">Faça login para acessar a calculadora.</p>
+      
+      <div class="field-group" style="margin-bottom: 16px; text-align: left;">
+        <label class="field-label">E-mail</label>
+        <div class="input-wrapper">
+          <input type="email" id="login-email" class="field-input" placeholder="Digite seu e-mail" />
+        </div>
+      </div>
+      
+      <div class="field-group" style="margin-bottom: 24px; text-align: left;">
+        <label class="field-label">Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="login-password" class="field-input" placeholder="Digite sua senha" />
+        </div>
+      </div>
+
+      <div id="login-error" class="login-error">Credenciais incorretas. Tente novamente.</div>
+
+      <button class="btn-confirm" style="width: 100%; padding: 14px; font-size: 15px;" onclick="handleLogin()">Entrar</button>
+    </div>
+  </div>
+
+  <!-- CALCULADORA (Oculta até o login) -->
+  <div class="container" id="app-container" style="display: none;">
+    <!-- MODE SWITCHER -->
+    <div class="mode-switcher" id="mode-switcher">
+      <span class="mode-label">Modo:</span>
+      <button class="mode-btn active" id="btn-dev" onclick="setMode('dev')">⚙️ Desenvolvimento</button>
+      <button class="mode-btn" id="btn-apresentacao" onclick="setMode('apresentacao')">📊 Apresentação</button>
+    </div>
+
     <!-- HEADER -->
     <header class="header">
       <div class="header-badge">CALCULADORA DE PRECIFICAÇÃO</div>
@@ -25,6 +60,7 @@
       <p class="header-subtitle">Calcule automaticamente o custo de infra, equipe, encargos e impostos para precificar seu serviço.</p>
     </header>
 
+    <!-- DEV / APRESENTAÇÃO VIEW (mesmo HTML, modo controlado por CSS) -->
     <div class="main-grid">
 
       <!-- ===== COLUNA ESQUERDA ===== -->
@@ -68,11 +104,27 @@
             </div>
           </div>
 
-          <div class="field-group" style="margin-top: 16px;">
-            <label for="preco-venda" class="field-label" style="color: var(--emerald);">Preço Cobrado por Restaurante</label>
-            <div class="input-wrapper">
-              <span class="input-prefix" style="color: var(--emerald);">R$</span>
-              <input type="number" id="preco-venda" class="field-input has-prefix" value="550.00" min="0" step="10" style="border-color: rgba(16,185,129,0.5); font-weight: bold; color: var(--emerald); background: rgba(16,185,129,0.05);" />
+          <div class="form-grid-3" style="margin-top: 16px;">
+            <div class="field-group">
+              <label for="preco-venda" class="field-label" style="color: var(--emerald);">Preço Cobrado (Mensal)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix" style="color: var(--emerald);">R$</span>
+                <input type="number" id="preco-venda" class="field-input has-prefix" value="550.00" min="0" step="10" style="border-color: rgba(16,185,129,0.5); font-weight: bold; color: var(--emerald); background: rgba(16,185,129,0.05);" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="taxa-vision" class="field-label" style="color: var(--primary);">Impl. Cortex Vision (Única)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix" style="color: var(--primary);">R$</span>
+                <input type="number" id="taxa-vision" class="field-input has-prefix" value="2000.00" min="0" step="100" style="border-color: rgba(61,155,255,0.5); font-weight: bold; color: var(--primary); background: rgba(61,155,255,0.05);" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="taxa-controle" class="field-label" style="color: var(--primary);">Impl. Cortex Controle (Única)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix" style="color: var(--primary);">R$</span>
+                <input type="number" id="taxa-controle" class="field-input has-prefix" value="2000.00" min="0" step="100" style="border-color: rgba(61,155,255,0.5); font-weight: bold; color: var(--primary); background: rgba(61,155,255,0.05);" />
+              </div>
             </div>
           </div>
 
@@ -219,6 +271,11 @@
                 <div class="metric-value" id="metric-imposto">R$ 0,00</div>
                 <div class="metric-sub" id="metric-imposto-pct">—% da Receita Bruta</div>
               </div>
+            </div>
+
+            <div class="breakdown-total" style="margin-top: 16px; background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(244,63,94,0.1)); border-color: rgba(245,158,11,0.25);">
+              <span class="total-label" style="color: var(--amber);">Receita Única (Setup)</span>
+              <span class="total-value" id="val-implementacao-total" style="color: var(--amber);">R$ 0,00</span>
             </div>
 
           </div>
