@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Precificação — Monitoramento IA</title>
+  <meta name="description" content="Calculadora profissional para precificação de serviços de monitoramento com IA para restaurantes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-badge">CALCULADORA DE PRECIFICAÇÃO</div>
+      <h1 class="header-title">Monitoramento IA <span class="gradient-text">por Restaurante</span></h1>
+      <p class="header-subtitle">Calcule automaticamente o custo de infra, equipe, encargos e impostos para precificar seu serviço.</p>
+    </header>
+
+    <div class="main-grid">
+
+      <!-- ===== COLUNA ESQUERDA ===== -->
+      <div class="left-col">
+
+        <!-- CONFIGURAÇÕES GERAIS -->
+        <section class="card" id="section-config">
+          <div class="card-header">
+            <div class="card-icon">⚙️</div>
+            <h2 class="card-title">Configurações Gerais</h2>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label for="qtd-restaurantes" class="field-label">Nº de Restaurantes</label>
+              <div class="input-wrapper">
+                <input type="number" id="qtd-restaurantes" class="field-input" value="4" min="1" step="1" />
+                <span class="input-suffix">un.</span>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="taxa-cambio" class="field-label">Taxa de Câmbio (USD → BRL)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix">R$</span>
+                <input type="number" id="taxa-cambio" class="field-input has-prefix" value="7.00" min="1" step="0.01" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="encargos" class="field-label">Encargos (%)</label>
+              <div class="input-wrapper">
+                <input type="number" id="encargos" class="field-input" value="10" min="0" step="0.5" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="imposto" class="field-label">Imposto (%)</label>
+              <div class="input-wrapper">
+                <input type="number" id="imposto" class="field-input" value="15" min="0" step="0.5" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group" style="margin-top: 16px;">
+            <label for="preco-venda" class="field-label" style="color: var(--emerald);">Preço Cobrado por Restaurante</label>
+            <div class="input-wrapper">
+              <span class="input-prefix" style="color: var(--emerald);">R$</span>
+              <input type="number" id="preco-venda" class="field-input has-prefix" value="550.00" min="0" step="10" style="border-color: rgba(16,185,129,0.5); font-weight: bold; color: var(--emerald); background: rgba(16,185,129,0.05);" />
+            </div>
+          </div>
+
+          <!-- Resumo de recursos calculados -->
+          <div class="resource-summary" id="resource-summary">
+            <!-- Preenchido pelo JS -->
+          </div>
+        </section>
+
+        <!-- INFRAESTRUTURA -->
+        <section class="card" id="section-infra">
+          <div class="card-header">
+            <div class="card-icon">🖥️</div>
+            <h2 class="card-title">Infraestrutura</h2>
+            <div class="card-tag">por mês</div>
+          </div>
+
+          <div id="infra-list" class="item-list">
+            <!-- Itens pré-preenchidos pelo JS -->
+          </div>
+
+          <button class="btn-add" id="btn-add-infra" onclick="openModal('infra')">
+            <span class="btn-add-icon">+</span> Adicionar Item de Infra
+          </button>
+        </section>
+
+        <!-- EQUIPE -->
+        <section class="card" id="section-equipe">
+          <div class="card-header">
+            <div class="card-icon">👥</div>
+            <h2 class="card-title">Equipe</h2>
+            <div class="card-tag">por mês</div>
+          </div>
+
+          <div id="equipe-list" class="item-list">
+            <!-- Itens pré-preenchidos pelo JS -->
+          </div>
+
+          <button class="btn-add" id="btn-add-equipe" onclick="openModal('equipe')">
+            <span class="btn-add-icon">+</span> Adicionar Membro da Equipe
+          </button>
+        </section>
+
+      </div>
+
+      <!-- ===== COLUNA DIREITA ===== -->
+      <div class="right-col">
+
+        <!-- PAINEL DE RESULTADOS -->
+        <section class="card results-card" id="section-results">
+          <div class="card-header">
+            <div class="card-icon">📊</div>
+            <h2 class="card-title">Resultados</h2>
+            <div class="live-badge">AO VIVO</div>
+          </div>
+
+          <!-- Destaque principal -->
+          <div class="result-hero">
+            <div class="result-hero-item" id="hero-por-restaurante">
+              <div class="hero-label">Custo por Restaurante</div>
+              <div class="hero-value" id="val-por-restaurante">R$ 0,00</div>
+              <div class="hero-sub" id="val-por-camera">R$ 0,00 / câmera</div>
+            </div>
+          </div>
+
+          <!-- Breakdown detalhado -->
+          <div class="results-breakdown">
+
+            <div class="breakdown-section">
+              <div class="breakdown-title">📦 Custos de Base</div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Custo de Infraestrutura</span>
+                <span class="breakdown-value" id="val-infra">R$ 0,00</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Custo de Equipe</span>
+                <span class="breakdown-value" id="val-equipe">R$ 0,00</span>
+              </div>
+              <div class="breakdown-row subtotal-row">
+                <span class="breakdown-label">Subtotal</span>
+                <span class="breakdown-value accent" id="val-subtotal">R$ 0,00</span>
+              </div>
+            </div>
+
+            <div class="breakdown-section">
+              <div class="breakdown-title">📋 Encargos & Impostos</div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Encargos (<span id="label-encargos-pct">10</span>% s/ subtotal)</span>
+                <span class="breakdown-value" id="val-encargo">R$ 0,00</span>
+              </div>
+              <div class="breakdown-row" style="flex-direction: column; align-items: flex-start;">
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                  <span class="breakdown-label">Imposto (<span id="label-imposto-pct">15</span>%)</span>
+                  <span class="breakdown-value" id="val-imposto">R$ 0,00</span>
+                </div>
+                <span style="font-size: 10px; color: var(--text-3); margin-top: 2px;">Calculado sobre a Receita Bruta (Preço cobrado)</span>
+              </div>
+            </div>
+
+            <div class="breakdown-total">
+              <span class="total-label">Total Geral</span>
+              <span class="total-value" id="val-total">R$ 0,00</span>
+            </div>
+
+            <!-- Cards de Lucro -->
+            <div class="metric-cards" style="margin-bottom: 12px;">
+              <div class="metric-card" style="background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.3);">
+                <div class="metric-icon">📈</div>
+                <div class="metric-label" style="color: var(--emerald);">Lucro por Restaurante</div>
+                <div class="metric-value" id="metric-lucro-rest" style="color: var(--emerald);">R$ 0,00</div>
+                <div class="metric-sub" id="metric-margem" style="color: var(--emerald); font-weight: bold;">Margem: 0%</div>
+              </div>
+              <div class="metric-card" style="background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.3);">
+                <div class="metric-icon">💰</div>
+                <div class="metric-label" style="color: var(--emerald);">Lucro Total Mensal</div>
+                <div class="metric-value" id="metric-lucro-total" style="color: var(--emerald);">R$ 0,00</div>
+                <div class="metric-sub">Soma de todos os restaurantes</div>
+              </div>
+            </div>
+
+            <!-- Cards métricas finais -->
+            <div class="metric-cards">
+              <div class="metric-card">
+                <div class="metric-icon">🏪</div>
+                <div class="metric-label">Custo p/ Restaurante</div>
+                <div class="metric-value" id="metric-restaurante">R$ 0,00</div>
+                <div class="metric-sub" id="metric-qtd-rest">— restaurantes</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">📷</div>
+                <div class="metric-label">Custo p/ Câmera</div>
+                <div class="metric-value" id="metric-camera">R$ 0,00</div>
+                <div class="metric-sub">3 câmeras / restaurante</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">📋</div>
+                <div class="metric-label">Encargo Total</div>
+                <div class="metric-value" id="metric-encargo">R$ 0,00</div>
+                <div class="metric-sub" id="metric-encargo-pct">—% do subtotal</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">🏛️</div>
+                <div class="metric-label">Imposto Total</div>
+                <div class="metric-value" id="metric-imposto">R$ 0,00</div>
+                <div class="metric-sub" id="metric-imposto-pct">—% da Receita Bruta</div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- DETALHAMENTO DE INFRA -->
+        <section class="card" id="section-infra-detail">
+          <div class="card-header">
+            <div class="card-icon">🔍</div>
+            <h2 class="card-title">Detalhamento de Infra</h2>
+          </div>
+          <div id="infra-detail-list" class="detail-list">
+            <!-- Preenchido pelo JS -->
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL para adicionar item -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal" id="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Adicionar Item</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field-group">
+          <label class="field-label">Nome do Item</label>
+          <input type="text" id="modal-name" class="field-input" placeholder="Ex: Servidor Extra" />
+        </div>
+        <div class="form-grid-2">
+          <div class="field-group">
+            <label class="field-label">Valor Base</label>
+            <input type="number" id="modal-value" class="field-input" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Moeda</label>
+            <select id="modal-currency" class="field-input field-select">
+              <option value="BRL">BRL (R$)</option>
+              <option value="USD">USD ($)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-grid-2">
+          <div class="field-group">
+            <label class="field-label">Cobrado por</label>
+            <select id="modal-billing" class="field-input field-select" onchange="toggleTimeFields()">
+              <option value="month">Mês</option>
+              <option value="year">Ano</option>
+              <option value="day">Dia</option>
+              <option value="hour">Hora</option>
+            </select>
+          </div>
+          <div class="field-group" id="modal-scaling-group">
+            <label class="field-label">Escalonamento</label>
+            <select id="modal-scaling" class="field-input field-select" onchange="updateScalingExplanation()">
+              <option value="fixed">Valor Fixo (Não escala)</option>
+              <option value="gpu">Por GPU (1 a cada 4 rest.)</option>
+              <option value="vps">Por VPS (Divisão prop.)</option>
+              <option value="storage">Por Storage (Proporcional)</option>
+              <option value="restaurante">Por Restaurante</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="scaling-info" id="scaling-explanation">O valor será cobrado uma única vez, independentemente da quantidade de restaurantes.</div>
+
+        <div class="form-grid-3 hidden" id="time-fields">
+           <div class="field-group">
+             <label class="field-label">Turnos</label>
+             <input type="number" id="modal-shifts" class="field-input" value="1" min="1" />
+           </div>
+           <div class="field-group">
+             <label class="field-label" id="label-hours-per">Horas/Turno</label>
+             <input type="number" id="modal-hours" class="field-input" value="6" min="1" />
+           </div>
+           <div class="field-group">
+             <label class="field-label">Dias/Mês</label>
+             <input type="number" id="modal-days" class="field-input" value="30" min="1" />
+           </div>
+        </div>
+
+        <div class="field-group" id="modal-desc-group">
+          <label class="field-label">Descrição (Deixe em branco para auto-gerar)</label>
+          <input type="text" id="modal-desc" class="field-input" placeholder="Ex: 5 horas/mês" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-confirm" id="modal-confirm-btn" onclick="confirmModal()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
